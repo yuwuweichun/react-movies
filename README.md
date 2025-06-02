@@ -115,9 +115,9 @@ Open [http://localhost:5173](http://localhost:5173) in your browser to view the 
 
 ## <a name="links">🔗 Assets</a>
 
-Assets and snippets used in the project can be found in the **[video kit](https://drive.google.com/drive/folders/19f94Pu686Khl4BtHamiwdHy_SSfgAuLY?usp=sharing)**.
+Assets and snippets used in the project can be found in the **[video kit](https://jsm.dev/react25-kit)**.
 
-<a href="https://drive.google.com/drive/folders/19f94Pu686Khl4BtHamiwdHy_SSfgAuLY?usp=sharing" target="_blank">
+<a href="https://jsm.dev/react25-kit" target="_blank">
   <img src="public/readme/videokit.png" alt="Video Kit Banner">
 </a>
 
@@ -128,6 +128,6 @@ Assets and snippets used in the project can be found in the **[video kit](https:
 Enjoyed creating this project? Dive deeper into our PRO courses for a richer learning adventure. They're packed with
 detailed explanations, cool features, and exercises to boost your skills. Give it a go!
 
-<a href="https://jsmastery.com/" target="_blank">
+<a href="https://jsm.dev/react25-jsmpro" target="_blank">
   <img src="public/readme/jsmpro.png" alt="Project Banner">
 </a>
