@@ -1,7 +1,7 @@
 <div align="center">
   <br />
     <a href="https://www.youtube.com/watch?v=dCLhUialKPQ" target="_blank">
-      <img src="public/readme/hero.jpg" alt="Project Banner">
+      <img src="public/readme/hero.png" alt="Project Banner">
     </a>
   <br />
   
@@ -117,7 +117,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser to view the 
 Assets and snippets used in the project can be found in the **[video kit](https://drive.google.com/drive/folders/19f94Pu686Khl4BtHamiwdHy_SSfgAuLY?usp=sharing)**.
 
 <a href="https://drive.google.com/drive/folders/19f94Pu686Khl4BtHamiwdHy_SSfgAuLY?usp=sharing" target="_blank">
-  <img src="public/readme/videokit.jpg" alt="Video Kit Banner">
+  <img src="public/readme/videokit.png" alt="Video Kit Banner">
 </a>
 
 ## <a name="more">🚀 More</a>
@@ -128,5 +128,5 @@ Enjoyed creating this project? Dive deeper into our PRO courses for a richer lea
 detailed explanations, cool features, and exercises to boost your skills. Give it a go!
 
 <a href="https://jsmastery.com/" target="_blank">
-  <img src="public/readme/jsmpro.jpg" alt="Project Banner">
+  <img src="public/readme/jsmpro.png" alt="Project Banner">
 </a>
