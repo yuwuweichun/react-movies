@@ -172,7 +172,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser to view the 
 
 @layer components {
   .pattern {
-    @apply bg-hero-pattern w-screen h-screen bg-center bg-cover absolute z-0;
+    @apply bg-hero-pattern w-full h-screen bg-center bg-cover absolute z-0;
   }
 
   .wrapper {
