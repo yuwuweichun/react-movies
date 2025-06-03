@@ -295,6 +295,8 @@ Open [http://localhost:5173](http://localhost:5173) in your browser to view the 
 
 <details>
 <summary><code>components/Spinner.jsx</code></summary>
+
+```jsx
 import React from 'react'
 
 const Spinner = () => {
@@ -315,6 +317,7 @@ const Spinner = () => {
   )
 }
 export default Spinner
+```
 </details>
 
 
