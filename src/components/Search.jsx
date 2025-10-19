@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 
 const Search = ({ searchTerm, setSearchTerm }) => {
   return (
@@ -16,4 +16,11 @@ const Search = ({ searchTerm, setSearchTerm }) => {
     </div>
   )
 }
+
+// 定义 PropTypes 来验证 props 类型
+Search.propTypes = {
+  searchTerm: PropTypes.string.isRequired,
+  setSearchTerm: PropTypes.func.isRequired
+}
+
 export default Search

@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Spinner = () => {
   return (
     <div role="status">
@@ -17,4 +15,6 @@ const Spinner = () => {
     </div>
   )
 }
+
+// Spinner 组件不需要 props，所以不需要 PropTypes
 export default Spinner
