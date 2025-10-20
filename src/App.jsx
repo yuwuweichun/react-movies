@@ -1,9 +1,11 @@
 // 导入 React 的核心 hooks
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 // 导入自定义组件
 import Search from './components/Search.jsx'        // 搜索输入框组件
 import Spinner from './components/Spinner.jsx'      // 加载动画组件
 import MovieCard from './components/MovieCard.jsx'  // 电影卡片组件
+// 导入自定义 hooks
+import useInfiniteScroll from './hooks/useInfiniteScroll.js'  // 无限滚动 hook
 // 导入第三方库
 import { useDebounce } from 'react-use'             // 防抖 hook，用于优化搜索性能
 // 导入数据库服务函数
@@ -35,8 +37,14 @@ const App = () => {
   const [movieList, setMovieList] = useState([]);
   // 错误信息
   const [errorMessage, setErrorMessage] = useState('');
-  // 加载状态
+  // 初始加载状态
   const [isLoading, setIsLoading] = useState(false);
+  // 加载更多状态
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  // 当前页码
+  const [currentPage, setCurrentPage] = useState(1);
+  // 是否还有更多数据
+  const [hasMore, setHasMore] = useState(true);
 
   // 热门电影列表（从数据库获取）
   const [trendingMovies, setTrendingMovies] = useState([]);
@@ -47,17 +55,26 @@ const App = () => {
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm])
 
   // ========== 获取电影数据的函数 ==========
-  const fetchMovies = async (query = '') => {
-    // 开始加载，显示加载动画
-    setIsLoading(true);
+  const fetchMovies = async (query = '', page = 1, isLoadMore = false) => {
+    // 如果是加载更多，设置加载更多状态；否则设置初始加载状态
+    if (isLoadMore) {
+      setIsLoadingMore(true);
+    } else {
+      setIsLoading(true);
+      // 重置状态
+      setCurrentPage(1);
+      setHasMore(true);
+      setMovieList([]);
+    }
+    
     // 清除之前的错误信息
     setErrorMessage('');
 
     try {
-      // 根据是否有搜索词决定使用哪个 API 端点
+      // 根据是否有搜索词决定使用哪个 API 端点，并添加分页参数
       const endpoint = query
-        ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`  // 搜索电影
-        : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;          // 获取热门电影
+        ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}`  // 搜索电影
+        : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&page=${page}`;          // 获取热门电影
 
       // 发起 API 请求
       const response = await fetch(endpoint, API_OPTIONS);
@@ -73,15 +90,27 @@ const App = () => {
       // 检查 API 是否返回错误（某些 API 会在数据中返回错误信息）
       if(data.Response === 'False') {
         setErrorMessage(data.Error || 'Failed to fetch movies');
-        setMovieList([]);
+        if (!isLoadMore) {
+          setMovieList([]);
+        }
         return;
       }
 
       // 更新电影列表状态
-      setMovieList(data.results || []);
+      if (isLoadMore) {
+        // 加载更多：追加到现有列表
+        setMovieList(prevMovies => [...prevMovies, ...(data.results || [])]);
+      } else {
+        // 初始加载：替换整个列表
+        setMovieList(data.results || []);
+      }
+
+      // 更新分页信息
+      setCurrentPage(data.page || page);
+      setHasMore((data.page || page) < (data.total_pages || 0));
 
       // 如果有搜索词且有搜索结果，更新搜索统计到数据库
-      if(query && data.results.length > 0) {
+      if(query && data.results.length > 0 && !isLoadMore) {
         await updateSearchCount(query, data.results[0]);
       }
     } catch (error) {
@@ -90,9 +119,25 @@ const App = () => {
       setErrorMessage('Error fetching movies. Please try again later.');
     } finally {
       // 无论成功或失败，都要停止加载状态
-      setIsLoading(false);
+      if (isLoadMore) {
+        setIsLoadingMore(false);
+      } else {
+        setIsLoading(false);
+      }
     }
   }
+
+  // ========== 加载更多电影的函数 ==========
+  const loadMoreMovies = useCallback(() => {
+    // 如果还有更多数据且不在加载中，则加载下一页
+    if (hasMore && !isLoadingMore && !isLoading) {
+      const nextPage = currentPage + 1;
+      fetchMovies(debouncedSearchTerm, nextPage, true);
+    }
+  }, [hasMore, isLoadingMore, isLoading, currentPage, debouncedSearchTerm]);
+
+  // ========== 无限滚动 Hook ==========
+  const lastElementRef = useInfiniteScroll(loadMoreMovies, hasMore, isLoadingMore);
 
   // ========== 加载热门电影的函数 ==========
   const loadTrendingMovies = async () => {
@@ -156,19 +201,44 @@ const App = () => {
 
           {/* 条件渲染：根据状态显示不同内容 */}
           {isLoading ? (
-            // 加载中：显示加载动画组件
+            // 初始加载中：显示加载动画组件
             <Spinner />
           ) : errorMessage ? (
             // 有错误：显示错误信息
             <p className="text-red-500">{errorMessage}</p>
           ) : (
             // 正常状态：显示电影列表
-            <ul>
-              {/* 遍历电影列表，为每个电影创建 MovieCard 组件 */}
-              {movieList.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </ul>
+            <>
+              <ul>
+                {/* 遍历电影列表，为每个电影创建 MovieCard 组件 */}
+                {movieList.map((movie, index) => {
+                  // 为最后一个电影卡片添加无限滚动的触发引用
+                  const isLastMovie = index === movieList.length - 1;
+                  return (
+                    <div
+                      key={movie.id}
+                      ref={isLastMovie ? lastElementRef : null}
+                    >
+                      <MovieCard movie={movie} />
+                    </div>
+                  );
+                })}
+              </ul>
+
+              {/* 加载更多状态：复用 Spinner 组件 */}
+              {isLoadingMore && (
+                <div className="load-more-spinner">
+                  <Spinner />
+                </div>
+              )}
+
+              {/* 没有更多数据时的轻提示（可选） */}
+              {!hasMore && movieList.length > 0 && (
+                <div className="load-more-end">
+                  <p className="text-gray-100">已显示所有电影</p>
+                </div>
+              )}
+            </>
           )}
         </section>
       </div>

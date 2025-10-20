@@ -140,6 +140,27 @@
       @apply text-gray-100 font-medium text-base;
     }
   }
+
+  /* 加载更多组件样式 */
+  .load-more {
+    @apply mt-8 flex flex-col items-center gap-4;
+  }
+
+  .load-more-spinner {
+    @apply flex flex-col items-center gap-3;
+  }
+
+  .load-more-text {
+    @apply text-light-100 text-sm;
+  }
+
+  .load-more-error {
+    @apply text-center;
+  }
+
+  .load-more-end {
+    @apply text-center;
+  }
 }
 
 @utility text-gradient {
