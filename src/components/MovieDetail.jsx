@@ -222,14 +222,14 @@ const MovieDetail = () => {
             {movie.production_countries && movie.production_countries.length > 0 && (
               <div className="production-section">
                 <h3>{getTranslation('productionCountries', language)}</h3>
-                <span>{movie.production_countries.map(country => country.name).join(', ')}</span>
+                <span className="production-text">{movie.production_countries.map(country => country.name).join(', ')}</span>
               </div>
             )}
 
             {movie.spoken_languages && movie.spoken_languages.length > 0 && (
               <div className="production-section">
                 <h3>{getTranslation('spokenLanguages', language)}</h3>
-                <span>{movie.spoken_languages.map(lang => lang.name).join(', ')}</span>
+                <span className="production-text">{movie.spoken_languages.map(lang => lang.name).join(', ')}</span>
               </div>
             )}
           </div>

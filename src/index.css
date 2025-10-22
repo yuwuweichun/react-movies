@@ -213,7 +213,7 @@
   }
 
   .movie-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-2 leading-tight;
+    @apply text-left text-3xl md:text-4xl lg:text-5xl font-bold mb-2 leading-tight;
   }
 
   .movie-tagline {
@@ -274,6 +274,10 @@
 
   .company-tag {
     @apply px-3 py-1 bg-light-100/10 text-light-100 rounded-full text-sm;
+  }
+
+  .production-text {
+    @apply text-gray-100 text-sm leading-relaxed;
   }
 
   .cast-section {
