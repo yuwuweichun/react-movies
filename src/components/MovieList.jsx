@@ -61,7 +61,7 @@ const MovieList = () => {
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm])
 
   // ========== 获取电影数据的函数 ==========
-  const fetchMovies = async (query = '', page = 1, isLoadMore = false) => {
+  const fetchMovies = useCallback(async (query = '', page = 1, isLoadMore = false) => {
     // 如果是加载更多，设置加载更多状态；否则设置初始加载状态
     if (isLoadMore) {
       setIsLoadingMore(true);
@@ -72,7 +72,7 @@ const MovieList = () => {
       setHasMore(true);
       setMovieList([]);
     }
-    
+
     // 清除之前的错误信息
     setErrorMessage('');
 
@@ -131,7 +131,7 @@ const MovieList = () => {
         setIsLoading(false);
       }
     }
-  }
+  }, [apiLanguage]) // fetchMovies 的依赖
 
   // ========== 加载更多电影的函数 ==========
   const loadMoreMovies = useCallback(() => {
@@ -140,7 +140,7 @@ const MovieList = () => {
       const nextPage = currentPage + 1;
       fetchMovies(debouncedSearchTerm, nextPage, true);
     }
-  }, [hasMore, isLoadingMore, isLoading, currentPage, debouncedSearchTerm, apiLanguage]); // 添加apiLanguage依赖
+  }, [hasMore, isLoadingMore, isLoading, currentPage, debouncedSearchTerm, fetchMovies]); // 移除多余的apiLanguage依赖
 
   // ========== 无限滚动 Hook ==========
   const lastElementRef = useInfiniteScroll(loadMoreMovies, hasMore, isLoadingMore);
@@ -161,7 +161,7 @@ const MovieList = () => {
   // 当防抖搜索词或语言改变时，重新获取电影数据
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
-  }, [debouncedSearchTerm, apiLanguage]); // 添加apiLanguage依赖
+  }, [debouncedSearchTerm, apiLanguage, fetchMovies]); // 添加fetchMovies依赖
 
   // 组件挂载时加载热门电影
   useEffect(() => {
