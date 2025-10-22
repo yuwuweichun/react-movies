@@ -222,7 +222,7 @@ const MovieList = () => {
                   const isLastMovie = index === movieList.length - 1;
                   return (
                     <div
-                      key={movie.id}
+                      key={`${movie.id}-${index}`}
                       ref={isLastMovie ? lastElementRef : null}
                     >
                       <MovieCard movie={movie} />
