@@ -1,4 +1,3 @@
-// 导入 React 的核心 hooks
 import { useEffect, useState, useCallback } from 'react'
 // 导入自定义组件
 import Search from './Search.jsx'        // 搜索输入框组件
@@ -29,7 +28,6 @@ const API_OPTIONS = {
   }
 }
 
-// ========== 电影列表组件 ==========
 const MovieList = () => {
   // 获取语言上下文
   const { language, apiLanguage } = useLanguage()
@@ -54,6 +52,8 @@ const MovieList = () => {
 
   // 热门电影列表（从数据库获取）
   const [trendingMovies, setTrendingMovies] = useState([]);
+
+  // 现在由于使用条件渲染，组件不会被卸载，所以不需要滚动位置恢复逻辑
 
   // ========== 防抖处理 ==========
   // 使用防抖技术，当用户停止输入 500ms 后才更新防抖搜索词
@@ -225,7 +225,7 @@ const MovieList = () => {
                       key={`${movie.id}-${index}`}
                       ref={isLastMovie ? lastElementRef : null}
                     >
-                      <MovieCard movie={movie} />
+                    <MovieCard movie={movie} />
                     </div>
                   );
                 })}

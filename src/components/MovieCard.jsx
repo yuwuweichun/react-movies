@@ -1,6 +1,4 @@
-// 导入 PropTypes 用于类型检查
 import PropTypes from 'prop-types'
-// 导入 React Router 的 Link 组件
 import { Link } from 'react-router-dom'
 
 // 电影卡片组件：显示单个电影的详细信息
@@ -8,7 +6,12 @@ const MovieCard = ({ movie:
   { id, title, vote_average, poster_path, release_date, original_language }
 }) => {
   return (
-    <Link to={`/movie/${id}`} className="movie-card-link">
+    <Link
+      to={`/movie/${id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="movie-card-link"
+    >
       <div className="movie-card">
         {/* 电影海报图片 */}
         <img
@@ -50,7 +53,7 @@ const MovieCard = ({ movie:
 // 定义 PropTypes 来验证 props 类型，确保组件接收正确的电影数据
 MovieCard.propTypes = {
   movie: PropTypes.shape({
-    id: PropTypes.number.isRequired,              // 电影ID，必需（用于路由）
+    id: PropTypes.number.isRequired,              // 电影ID，必需（用于回调）
     title: PropTypes.string.isRequired,           // 电影标题，必需
     vote_average: PropTypes.number,               // 评分，可选
     poster_path: PropTypes.string,                // 海报路径，可选

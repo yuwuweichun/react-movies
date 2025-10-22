@@ -1,4 +1,3 @@
-// 导入 React Router 相关组件
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 // 导入自定义组件
 import MovieList from './components/MovieList.jsx'  // 电影列表组件
@@ -14,7 +13,7 @@ const App = () => {
       <Router>
         {/* 全局语言切换按钮 */}
         <LanguageToggle />
-        
+
         <Routes>
           {/* 首页路由：显示电影列表 */}
           <Route path="/" element={<MovieList />} />

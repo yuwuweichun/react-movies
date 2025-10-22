@@ -1,7 +1,8 @@
 // 导入 React 的核心 hooks
 import { useEffect, useState, useCallback } from 'react'
 // 导入 React Router 相关组件
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+
 // 导入自定义组件
 import Spinner from './Spinner.jsx'
 // 导入自定义 hooks
@@ -24,7 +25,6 @@ const API_OPTIONS = {
   }
 }
 
-// ========== 电影详情组件 ==========
 const MovieDetail = () => {
   // 获取路由参数中的电影ID
   const { id } = useParams();
@@ -107,9 +107,9 @@ const MovieDetail = () => {
           <div className="error-container">
             <h2 className="text-red-500">{getTranslation('error', language)}</h2>
             <p className="text-gray-100">{getTranslation('errorLoadingDetails', language)}</p>
-            <Link to="/" className="back-button">
+            <button onClick={() => window.close()} className="back-button">
               {getTranslation('backToMovies', language)}
-            </Link>
+            </button>
           </div>
         </div>
       </main>
@@ -124,9 +124,9 @@ const MovieDetail = () => {
         <div className="wrapper">
           <div className="error-container">
             <h2>{getTranslation('movieNotFound', language)}</h2>
-            <Link to="/" className="back-button">
+            <button onClick={() => window.close()} className="back-button">
               {getTranslation('backToMovies', language)}
-            </Link>
+            </button>
           </div>
         </div>
       </main>
@@ -141,9 +141,13 @@ const MovieDetail = () => {
       <div className="wrapper">
         {/* 返回按钮 */}
         <div className="back-button-container">
-          <Link to="/" className="back-button">
-            ← {getTranslation('backToMovies', language)}
-          </Link>
+          <button
+            onClick={() => window.close()}
+            className="back-button"
+            title="关闭此标签页"
+          >
+            ✕ {getTranslation('backToMovies', language)}
+          </button>
         </div>
 
         {/* 电影详情头部区域 */}
