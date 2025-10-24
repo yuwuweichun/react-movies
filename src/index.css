@@ -308,6 +308,8 @@
     @apply text-gray-100 text-xs;
   }
 
+
+
   /* 语言切换按钮样式 */
   .language-toggle-container {
     @apply fixed top-4 right-4 z-50;
@@ -327,6 +329,65 @@
 
   .toggle-icon {
     @apply transition-transform duration-300 text-light-100 hover:scale-110;
+  }
+
+  /* 筛选按钮样式 */
+  .filter-toggle-container {
+    @apply fixed top-4 left-4 z-50;
+  }
+
+  .filter-toggle-button {
+    @apply flex items-center gap-2 px-4 py-2 bg-dark-100/90 backdrop-blur-sm border border-light-100/20 rounded-lg text-white hover:bg-dark-100 transition-all duration-300 shadow-lg cursor-pointer;
+  }
+
+  .filter-icon {
+    @apply transition-transform duration-200;
+  }
+
+  .filter-icon.open {
+    @apply transform rotate-180;
+  }
+
+  .filter-text {
+    @apply font-medium text-sm;
+  }
+
+  /* 侧边栏样式 */
+  .filter-sidebar {
+    @apply fixed top-0 left-0 h-full w-80 bg-dark-100 border-r border-light-100/10 z-40 transform -translate-x-full transition-transform duration-300 ease-in-out;
+  }
+
+  .filter-sidebar.open {
+    @apply translate-x-0;
+  }
+
+  .filter-sidebar-content {
+    @apply p-6 h-full;
+  }
+
+  /* Monospace font for year dropdown */
+  .font-mono {
+    font-family: 'Courier New', 'Lucida Console', Monaco, monospace;
+  }
+
+  /* Custom scrollbar for year select dropdown */
+  .year-select-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .year-select-scrollbar::-webkit-scrollbar-track {
+    background: rgba(206, 206, 251, 0.1);
+    border-radius: 4px;
+  }
+
+  .year-select-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(206, 206, 251, 0.3);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  .year-select-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(206, 206, 251, 0.5);
   }
 
   /* 响应式设计 */

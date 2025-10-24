@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react'
 import Search from './Search.jsx'        // 搜索输入框组件
 import Spinner from './Spinner.jsx'      // 加载动画组件
 import MovieCard from './MovieCard.jsx'  // 电影卡片组件
+import MovieFilter from './MovieFilter.jsx'; // 电影筛选组件
 // 导入自定义 hooks
 import useInfiniteScroll from '../hooks/useInfiniteScroll.js'  // 无限滚动 hook
 import { useLanguage } from '../contexts/LanguageContext.jsx'  // 语言上下文 hook
@@ -36,6 +37,14 @@ const MovieList = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   // 用户输入的搜索词（实时更新）
   const [searchTerm, setSearchTerm] = useState('');
+
+  // 筛选器状态
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedSortBy, setSelectedSortBy] = useState('');
+  const [genresList, setGenresList] = useState([]); // 存储从 API 获取的电影类型列表
+  const [appliedFilters, setAppliedFilters] = useState({}); // 用于存储应用后的筛选条件
 
   // 电影列表数据
   const [movieList, setMovieList] = useState([]);
@@ -77,10 +86,18 @@ const MovieList = () => {
     setErrorMessage('');
 
     try {
-      // 根据是否有搜索词决定使用哪个 API 端点，并添加分页参数和动态语言支持
-      const endpoint = query
-        ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}&language=${apiLanguage}`  // 搜索电影
-        : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&page=${page}&language=${apiLanguage}`;          // 获取热门电影
+      let endpoint;
+      if (query) {
+        // 如果有搜索词，使用搜索 API
+        endpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}&language=${apiLanguage}`;
+      } else {
+        // 否则，使用 discover API 并应用筛选条件
+        let sortBy = appliedFilters.sortBy || 'popularity.desc';
+        endpoint = `${API_BASE_URL}/discover/movie?sort_by=${sortBy}&page=${page}&language=${apiLanguage}`;
+        if (appliedFilters.region) endpoint += `&with_original_language=${appliedFilters.region}`; // TMDB uses with_original_language for region filtering
+        if (appliedFilters.genres && appliedFilters.genres.length > 0) endpoint += `&with_genres=${appliedFilters.genres.join(',')}`;
+        if (appliedFilters.year) endpoint += `&primary_release_year=${appliedFilters.year}`;
+      }
 
       // 发起 API 请求
       const response = await fetch(endpoint, API_OPTIONS);
@@ -131,7 +148,7 @@ const MovieList = () => {
         setIsLoading(false);
       }
     }
-  }, [apiLanguage]) // fetchMovies 的依赖
+  }, [apiLanguage, appliedFilters]) // fetchMovies 的依赖
 
   // ========== 加载更多电影的函数 ==========
   const loadMoreMovies = useCallback(() => {
@@ -140,7 +157,49 @@ const MovieList = () => {
       const nextPage = currentPage + 1;
       fetchMovies(debouncedSearchTerm, nextPage, true);
     }
-  }, [hasMore, isLoadingMore, isLoading, currentPage, debouncedSearchTerm, fetchMovies]); // 移除多余的apiLanguage依赖
+  }, [hasMore, isLoadingMore, isLoading, currentPage, debouncedSearchTerm, fetchMovies]);
+
+  // ========== 获取电影类型列表的函数 ==========
+  const fetchGenres = useCallback(async () => {
+    try {
+      const endpoint = `${API_BASE_URL}/genre/movie/list?language=${apiLanguage}`;
+      const response = await fetch(endpoint, API_OPTIONS);
+      if (!response.ok) {
+        throw new Error('Failed to fetch genres');
+      }
+      const data = await response.json();
+      setGenresList(data.genres || []);
+    } catch (error) {
+      console.error(`Error fetching genres: ${error}`);
+    }
+  }, [apiLanguage]);
+
+  // ========== 应用筛选的函数 ==========
+  const applyFilters = () => {
+    setAppliedFilters({
+      region: selectedRegion,
+      genres: selectedGenres,
+      year: selectedYear,
+      sortBy: selectedSortBy,
+    });
+    // 重置页码并重新获取电影列表
+    setCurrentPage(1);
+    setMovieList([]);
+    fetchMovies(debouncedSearchTerm, 1, false);
+  };
+
+  // ========== 重置筛选的函数 ==========
+  const resetFilters = () => {
+    setSelectedRegion('');
+    setSelectedGenres([]);
+    setSelectedYear('');
+    setSelectedSortBy('');
+    setAppliedFilters({}); // 清空已应用的筛选
+    // 重置页码并重新获取电影列表
+    setCurrentPage(1);
+    setMovieList([]);
+    fetchMovies(debouncedSearchTerm, 1, false);
+  };
 
   // ========== 无限滚动 Hook ==========
   const lastElementRef = useInfiniteScroll(loadMoreMovies, hasMore, isLoadingMore);
@@ -158,15 +217,16 @@ const MovieList = () => {
   }
 
   // ========== 副作用处理 (useEffect) ==========
-  // 当防抖搜索词或语言改变时，重新获取电影数据
+  // 当防抖搜索词、语言或应用筛选条件改变时，重新获取电影数据
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
-  }, [debouncedSearchTerm, apiLanguage, fetchMovies]); // 添加fetchMovies依赖
+  }, [debouncedSearchTerm, apiLanguage, fetchMovies, appliedFilters]);
 
-  // 组件挂载时加载热门电影
+  // 组件挂载时加载热门电影和电影类型
   useEffect(() => {
     loadTrendingMovies();
-  }, []);
+    fetchGenres();
+  }, [fetchGenres]);
 
   // ========== 渲染组件 ==========
   return (
@@ -182,10 +242,25 @@ const MovieList = () => {
 
           {/* 搜索组件：传递搜索词和设置函数作为 props */}
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+          {/* 电影筛选组件 - 现在是浮动按钮，不占用页面空间 */}
+          <MovieFilter
+            genresList={genresList}
+            selectedRegion={selectedRegion}
+            setSelectedRegion={setSelectedRegion}
+            selectedGenres={selectedGenres}
+            setSelectedGenres={setSelectedGenres}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            selectedSortBy={selectedSortBy}
+            setSelectedSortBy={setSelectedSortBy}
+            applyFilters={applyFilters}
+            resetFilters={resetFilters}
+          />
         </header>
 
         {/* 热门电影区域：只有当有热门电影数据时才显示 */}
-        {trendingMovies.length > 0 && (
+        {trendingMovies.length > 0 && !debouncedSearchTerm && Object.keys(appliedFilters).length === 0 && (
           <section className="trending">
             <h2>{getTranslation('trendingMovies', language)}</h2>
 

@@ -40,3 +40,124 @@
 .read-the-docs {
   color: #888;
 }
+
+/* 移除旧的 MovieFilter 样式 */
+.movie-filter-container {
+  background-color: var(--color-dark-100); /* 统一背景色 */
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+  text-align: left;
+  color: #fff;
+}
+
+.movie-filter-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #646cff; /* Highlight color */
+}
+
+.filter-group {
+  margin-bottom: 1rem;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #ccc;
+}
+
+.filter-group select,
+.filter-group input[type="number"] {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-light-100)/10; /* 统一边框颜色 */
+  background-color: #222;
+  color: #fff; /* 确保文本颜色为白色 */
+  font-size: 1rem;
+  appearance: none; /* Remove default select arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.filter-group select option {
+  background-color: var(--color-dark-100); /* 确保下拉选项背景色与容器一致 */
+  color: #fff; /* 确保下拉选项文本颜色为白色 */
+}
+
+.filter-group select:focus,
+.filter-group input[type="number"]:focus {
+  outline: none;
+  border-color: #646cff;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.5);
+}
+
+.genre-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  max-height: 150px; /* Limit height for scrollability */
+  overflow-y: auto;
+  padding-right: 10px; /* Space for scrollbar */
+  border: 1px solid var(--color-light-100)/10; /* 统一边框颜色 */
+  border-radius: 4px;
+  padding: 1rem;
+  background-color: #222;
+}
+
+.genre-checkboxes label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0; /* Override default label margin */
+  font-weight: normal;
+  cursor: pointer;
+  color: #fff; /* 确保复选框标签文本颜色为白色 */
+}
+
+.genre-checkboxes input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: auto; /* Reset width for checkboxes */
+}
+
+.filter-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.filter-actions button {
+  flex: 1;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.filter-actions button:first-child { /* Apply Filters button */
+  background-color: #646cff;
+  color: #fff;
+}
+
+.filter-actions button:first-child:hover {
+  background-color: #535bf2;
+}
+
+.filter-actions button:last-child { /* Reset Filters button */
+  background-color: #444;
+  color: #fff;
+}
+
+.filter-actions button:last-child:hover {
+  background-color: #555;
+}
+
+/* 确保占位符颜色一致 */
+.filter-group input[type="number"]::placeholder {
+  color: var(--color-light-200);
+  opacity: 1; /* Firefox 默认会降低占位符透明度 */
+}
