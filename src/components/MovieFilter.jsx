@@ -28,7 +28,7 @@ const FilterToggleButton = ({ isOpen, onToggle, language }) => {
             strokeLinejoin="round"
           />
         </svg>
-        <span className="filter-text">{getTranslation('filterBy', language)}</span>
+        <span className="filter-text text-center">{getTranslation('filterBy', language)}</span>
       </button>
     </div>
   );

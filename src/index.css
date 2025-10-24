@@ -310,38 +310,53 @@
 
 
 
-  /* 语言切换按钮样式 */
+  /* 统一按钮容器样式 */
+  .filter-toggle-container,
   .language-toggle-container {
-    @apply fixed top-4 right-4 z-50;
+    @apply fixed right-4 z-50;
   }
 
+  .filter-toggle-container {
+    @apply top-4;
+  }
+
+  .language-toggle-container {
+    @apply top-16;
+  }
+
+  /* 统一按钮样式 - 使用固定宽度和网格布局 */
+  .filter-toggle-button,
   .language-toggle-button {
-    @apply flex items-center gap-2 px-4 py-2 bg-dark-100/90 backdrop-blur-sm border border-light-100/20 rounded-lg text-white hover:bg-dark-100 transition-all duration-300 shadow-lg cursor-pointer;
+    @apply grid gap-2 px-3 py-2.5 bg-dark-100/90 backdrop-blur-sm border border-light-100/20 rounded-lg text-white hover:bg-dark-100 transition-all duration-300 shadow-lg cursor-pointer;
+    width: 115px;
+    height: 44px;
+    grid-template-columns: 20px 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: center;
+  }
+
+  /* 确保文字都居中对齐 */
+  .filter-text,
+  .language-toggle-button > div:last-child {
+    @apply justify-self-start;
+    margin-left: 6px;
+  }
+
+  .language-icon {
+    @apply flex-shrink-0 transition-all duration-300 text-light-100;
   }
 
   .language-flag {
-    @apply text-lg;
+    @apply text-lg flex-shrink-0;
   }
 
   .language-code {
-    @apply font-medium text-sm;
-  }
-
-  .toggle-icon {
-    @apply transition-transform duration-300 text-light-100 hover:scale-110;
-  }
-
-  /* 筛选按钮样式 */
-  .filter-toggle-container {
-    @apply fixed top-4 left-4 z-50;
-  }
-
-  .filter-toggle-button {
-    @apply flex items-center gap-2 px-4 py-2 bg-dark-100/90 backdrop-blur-sm border border-light-100/20 rounded-lg text-white hover:bg-dark-100 transition-all duration-300 shadow-lg cursor-pointer;
+    @apply font-medium text-sm flex-shrink-0;
   }
 
   .filter-icon {
-    @apply transition-transform duration-200;
+    @apply flex-shrink-0 transition-transform duration-200;
   }
 
   .filter-icon.open {
@@ -349,7 +364,24 @@
   }
 
   .filter-text {
-    @apply font-medium text-sm;
+    @apply font-medium text-sm flex-shrink-0;
+  }
+
+  /* 移动端图标调整 */
+  @media (max-width: 768px) {
+    .filter-icon,
+    .language-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .filter-icon,
+    .language-icon {
+      width: 20px;
+      height: 20px;
+    }
   }
 
   /* 侧边栏样式 */
@@ -392,16 +424,35 @@
 
   /* 响应式设计 */
   @media (max-width: 768px) {
-    .language-toggle-container {
+    .filter-toggle-container {
       @apply top-3 right-3;
     }
 
-    .language-toggle-button {
-      @apply px-3 py-2;
+    .language-toggle-container {
+      @apply top-15 right-3;
     }
 
-    .language-code {
+    .filter-toggle-button,
+    .language-toggle-button {
+      width: 90px;
+      height: 40px;
+      padding: 8px 12px;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+
+    /* 平板端隐藏所有文字，只显示图标 */
+    .filter-text,
+    .language-toggle-button > div:last-child,
+    .language-code,
+    .language-flag {
       @apply hidden;
+    }
+
+    /* 图标居中 */
+    .filter-icon,
+    .language-icon {
+      @apply justify-self-center;
     }
 
     .movie-info-overlay {
@@ -422,6 +473,39 @@
 
     .cast-photo {
       @apply h-40;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .filter-toggle-container {
+      @apply top-2 right-2;
+    }
+
+    .language-toggle-container {
+      @apply top-14 right-2;
+    }
+
+    .filter-toggle-button,
+    .language-toggle-button {
+      width: 44px;
+      height: 36px;
+      padding: 6px 8px;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+
+    /* 手机端隐藏所有文字，只显示图标 */
+    .filter-text,
+    .language-toggle-button > div:last-child,
+    .language-code,
+    .language-flag {
+      @apply hidden;
+    }
+
+    /* 图标居中 */
+    .filter-icon,
+    .language-icon {
+      @apply justify-self-center;
     }
   }
 }

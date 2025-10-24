@@ -56,5 +56,6 @@ export const getTrendingMovies = async () => {
     return result.documents;  // 返回文档数组
   } catch (error) {
     console.error(error);  // 记录错误但不影响主应用功能
+    return [];  // 返回空数组，确保函数始终返回数组
   }
 }

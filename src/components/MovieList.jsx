@@ -260,7 +260,7 @@ const MovieList = () => {
         </header>
 
         {/* 热门电影区域：只有当有热门电影数据时才显示 */}
-        {trendingMovies.length > 0 && !debouncedSearchTerm && Object.keys(appliedFilters).length === 0 && (
+        {trendingMovies && trendingMovies.length > 0 && !debouncedSearchTerm && Object.keys(appliedFilters).length === 0 && (
           <section className="trending">
             <h2>{getTranslation('trendingMovies', language)}</h2>
 
