@@ -10,6 +10,14 @@ import { useLanguage } from '../contexts/LanguageContext.jsx'
 // 导入翻译配置
 import { getTranslation, formatRuntime, formatDate } from '../config/translations.js'
 
+// 导入 Swiper 相关组件和样式
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/effect-coverflow'
+
 // TMDB (The Movie Database) API 的基础 URL
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -34,6 +42,7 @@ const MovieDetail = () => {
   // ========== 状态管理 ==========
   const [movie, setMovie] = useState(null);           // 电影详情数据
   const [credits, setCredits] = useState(null);       // 演员和制作人员信息
+  const [videos, setVideos] = useState(null);         // 电影视频数据
   const [loading, setLoading] = useState(true);       // 加载状态
   const [error, setError] = useState('');             // 错误信息
 
@@ -42,16 +51,32 @@ const MovieDetail = () => {
     return path ? `https://image.tmdb.org/t/p/${size}${path}` : '/no-movie.png';
   };
 
+  // ========== 获取视频数据的函数 ==========
+  const fetchVideos = useCallback(async (movieId, language) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/movie/${movieId}/videos?language=${language}`, API_OPTIONS);
+      if (!response.ok) {
+        throw new Error('Failed to fetch videos');
+      }
+      const data = await response.json();
+      return data.results || [];
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+      return [];
+    }
+  }, []);
+
   // ========== 获取电影详情的函数 ==========
   const fetchMovieDetails = useCallback(async (movieId) => {
     try {
       setLoading(true);
       setError('');
 
-      // 并行请求电影详情、演员信息（使用动态语言）
-      const [movieResponse, creditsResponse] = await Promise.all([
+      // 并行请求电影详情、演员信息和视频（使用动态语言）
+      const [movieResponse, creditsResponse, videosResponse] = await Promise.all([
         fetch(`${API_BASE_URL}/movie/${movieId}?language=${apiLanguage}`, API_OPTIONS),
-        fetch(`${API_BASE_URL}/movie/${movieId}/credits?language=${apiLanguage}`, API_OPTIONS)
+        fetch(`${API_BASE_URL}/movie/${movieId}/credits?language=${apiLanguage}`, API_OPTIONS),
+        fetchVideos(movieId, apiLanguage)
       ]);
 
       // 检查响应是否成功
@@ -63,9 +88,16 @@ const MovieDetail = () => {
       const movieData = await movieResponse.json();
       const creditsData = await creditsResponse.json();
 
+      // 处理视频数据：优先使用当前语言，如果没有则fallback到英文
+      let videoData = videosResponse;
+      if (videoData.length === 0 && apiLanguage !== 'en-US') {
+        videoData = await fetchVideos(movieId, 'en-US');
+      }
+
       // 更新状态
       setMovie(movieData);
       setCredits(creditsData);
+      setVideos(videoData);
 
     } catch (error) {
       console.error('Error fetching movie details:', error);
@@ -73,7 +105,7 @@ const MovieDetail = () => {
     } finally {
       setLoading(false);
     }
-  }, [apiLanguage]); // 添加apiLanguage依赖
+  }, [apiLanguage, fetchVideos]); // 添加apiLanguage和fetchVideos依赖
 
 
   // ========== 副作用处理 ==========
@@ -205,6 +237,81 @@ const MovieDetail = () => {
             <div className="overview-section">
               <h2>{getTranslation('movieOverview', language)}</h2>
               <p className="movie-overview">{movie.overview}</p>
+            </div>
+          )}
+
+          {/* 电影视频 */}
+          {videos && videos.length > 0 && (
+            <div className="videos-section">
+              <h2>{getTranslation('movieVideos', language)}</h2>
+              <div className="videos-container">
+                <Swiper
+                  modules={[Navigation, Pagination, EffectCoverflow]}
+                  effect="coverflow"
+                  grabCursor={true}
+                  centeredSlides={true}
+                  slidesPerView="auto"
+                  spaceBetween={20}
+                  coverflowEffect={{
+                    rotate: 30,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1,
+                    slideShadows: true,
+                  }}
+                  navigation={true}
+                  pagination={{ clickable: true }}
+                  breakpoints={{
+                    320: {
+                      slidesPerView: 1.2,
+                      spaceBetween: 15
+                    },
+                    640: {
+                      slidesPerView: 1.5,
+                      spaceBetween: 20
+                    },
+                    768: {
+                      slidesPerView: 2,
+                      spaceBetween: 25
+                    },
+                    1024: {
+                      slidesPerView: "auto",
+                      spaceBetween: 30
+                    }
+                  }}
+                  className="movie-videos-swiper"
+                >
+                  {videos.map((video) => (
+                    <SwiperSlide key={video.id} className="video-slide">
+                      <div className="video-item">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${video.key}`}
+                          title={video.name}
+                          frameBorder="0"
+                          allowFullScreen
+                          className="video-iframe"
+                        />
+                        <div className="video-info">
+                          <h3 className="video-title">{video.name}</h3>
+                          <p className="video-type">{video.type}</p>
+                          {video.published_at && (
+                            <p className="video-date">
+                              {new Date(video.published_at).toLocaleDateString(language === 'zh' ? 'zh-CN' : 'en-US')}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            </div>
+          )}
+
+          {/* 当没有视频时显示提示 */}
+          {videos && videos.length === 0 && (
+            <div className="no-videos-section">
+              <p className="no-videos-text">{getTranslation('noVideosAvailable', language)}</p>
             </div>
           )}
 

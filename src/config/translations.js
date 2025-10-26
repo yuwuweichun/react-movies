@@ -43,6 +43,8 @@ export const translations = {
     
     // 电影详情页
     movieOverview: '简介',
+    movieVideos: '电影视频',
+    noVideosAvailable: '暂无视频',
     productionCompanies: '制作公司',
     productionCountries: '制作国家',
     spokenLanguages: '语言',
@@ -110,6 +112,8 @@ export const translations = {
     
     // Movie detail page
     movieOverview: 'Overview',
+    movieVideos: 'Movie Videos',
+    noVideosAvailable: 'No videos available',
     productionCompanies: 'Production Companies',
     productionCountries: 'Production Countries',
     spokenLanguages: 'Languages',

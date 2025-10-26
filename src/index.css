@@ -308,6 +308,118 @@
     @apply text-gray-100 text-xs;
   }
 
+  /* 视频区域样式 */
+  .videos-section {
+    @apply bg-dark-100 p-6 rounded-2xl shadow-inner shadow-light-100/10;
+  }
+
+  .videos-section h2 {
+    @apply mb-6 text-2xl;
+  }
+
+  .videos-container {
+    @apply relative;
+  }
+
+  .movie-videos-swiper {
+    @apply w-full;
+    --swiper-navigation-color: #646cff;
+    --swiper-pagination-color: #646cff;
+  }
+
+  .video-slide {
+    @apply bg-center bg-cover rounded-lg overflow-hidden shadow-lg;
+  }
+
+  .video-item {
+    @apply relative w-full h-full flex flex-col bg-dark-100 rounded-lg overflow-hidden;
+  }
+
+  .video-iframe {
+    @apply w-full flex-1 rounded-t-lg;
+    aspect-ratio: 16 / 9;
+    border: none;
+  }
+
+  .video-info {
+    @apply p-4 bg-gradient-to-b from-dark-100 to-gray-900 text-white;
+  }
+
+  .video-title {
+    @apply text-lg font-bold mb-2 line-clamp-2 text-white;
+  }
+
+  .video-type {
+    @apply text-sm text-light-200 mb-1 capitalize font-medium;
+  }
+
+  .video-date {
+    @apply text-xs text-gray-200;
+  }
+
+  .no-videos-section {
+    @apply bg-dark-100 p-6 rounded-2xl shadow-inner shadow-light-100/10 text-center;
+  }
+
+  .no-videos-text {
+    @apply text-gray-100 text-base;
+  }
+
+  /* 移动端视频轮播图样式 */
+  @media (max-width: 768px) {
+    .video-slide {
+      width: 240px;
+      height: 380px;
+    }
+
+    .video-iframe {
+      height: 220px;
+    }
+
+    .video-info {
+      @apply p-3;
+    }
+
+    .video-title {
+      @apply text-base mb-1;
+    }
+
+    .video-type {
+      @apply text-xs;
+    }
+
+    .video-date {
+      @apply text-xs;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .video-slide {
+      width: 200px;
+      height: 320px;
+    }
+
+    .video-iframe {
+      height: 180px;
+    }
+
+    .video-info {
+      @apply p-2;
+    }
+
+    .video-title {
+      @apply text-sm mb-1;
+    }
+
+    .video-type {
+      @apply text-xs;
+    }
+
+    .video-date {
+      @apply text-xs;
+    }
+  }
+
 
 
   /* 统一按钮容器样式 */
