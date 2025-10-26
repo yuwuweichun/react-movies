@@ -1,5 +1,5 @@
 // 导入 React 的核心 hooks
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 // 导入 React Router 相关组件
 import { useParams } from 'react-router-dom'
 
@@ -45,6 +45,13 @@ const MovieDetail = () => {
   const [videos, setVideos] = useState(null);         // 电影视频数据
   const [loading, setLoading] = useState(true);       // 加载状态
   const [error, setError] = useState('');             // 错误信息
+  const [currentPlayingVideoId, setCurrentPlayingVideoId] = useState(null); // 当前播放的视频ID
+  const [showAllVideos, setShowAllVideos] = useState(false); // 是否显示所有视频
+  const playersRef = useRef({}); // 存储所有播放器实例的引用
+
+  // 视频显示数量限制
+  const MAX_VIDEOS = 6;
+  const EXTENDED_MAX_VIDEOS = 24;
 
   // ========== 获取图片URL的辅助函数 ==========
   const getImageUrl = (path, size = 'w500') => {
@@ -114,6 +121,77 @@ const MovieDetail = () => {
       fetchMovieDetails(id);
     }
   }, [id, fetchMovieDetails]); // 使用fetchMovieDetails依赖
+
+  // 加载 YouTube IFrame API 脚本
+  useEffect(() => {
+    if (videos && videos.length > 0) {
+      if (!window.YT) {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        window.onYouTubeIframeAPIReady = () => {
+          initializePlayers();
+        };
+      } else {
+        initializePlayers();
+      }
+    }
+  });
+
+// 播放器状态变化处理
+const onPlayerStateChange = useCallback((event, videoId) => {
+  if (event.data === window.YT.PlayerState.PLAYING) {
+    // 如果有其他视频在播放，暂停它
+    if (currentPlayingVideoId && currentPlayingVideoId !== videoId) {
+      const previousPlayer = playersRef.current[currentPlayingVideoId];
+      if (previousPlayer && previousPlayer.pauseVideo) {
+        previousPlayer.pauseVideo();
+      }
+    }
+    setCurrentPlayingVideoId(videoId);
+  } else if (event.data === window.YT.PlayerState.PAUSED || event.data === window.YT.PlayerState.ENDED) {
+    // 如果当前视频暂停或结束，重置状态
+    if (currentPlayingVideoId === videoId) {
+      setCurrentPlayingVideoId(null);
+    }
+  }
+}, [currentPlayingVideoId]);
+
+// 初始化播放器
+const initializePlayers = useCallback(() => {
+  videos.forEach((video) => {
+    if (!playersRef.current[video.id]) {
+      playersRef.current[video.id] = new window.YT.Player(`youtube-player-${video.id}`, {
+        events: {
+          onStateChange: (event) => onPlayerStateChange(event, video.id),
+        },
+      });
+    }
+  });
+}, [videos, onPlayerStateChange]);
+
+// 播放当前视频并暂停其他视频
+const playCurrentVideo = useCallback((swiper) => {
+  const activeIndex = swiper.activeIndex;
+  const currentVideo = videos[activeIndex];
+  if (currentVideo) {
+    // 暂停之前的视频
+    if (currentPlayingVideoId && currentPlayingVideoId !== currentVideo.id) {
+      const previousPlayer = playersRef.current[currentPlayingVideoId];
+      if (previousPlayer && previousPlayer.pauseVideo) {
+        previousPlayer.pauseVideo();
+      }
+    }
+    // 播放当前视频
+    const currentPlayer = playersRef.current[currentVideo.id];
+    if (currentPlayer && currentPlayer.playVideo) {
+      currentPlayer.playVideo();
+    }
+    setCurrentPlayingVideoId(currentVideo.id);
+  }
+}, [videos, currentPlayingVideoId]);
 
   // ========== 渲染加载状态 ==========
   if (loading) {
@@ -261,6 +339,7 @@ const MovieDetail = () => {
                   }}
                   navigation={true}
                   pagination={{ clickable: true }}
+                  onSlideChange={playCurrentVideo}
                   breakpoints={{
                     320: {
                       slidesPerView: 1.2,
@@ -281,11 +360,12 @@ const MovieDetail = () => {
                   }}
                   className="movie-videos-swiper"
                 >
-                  {videos.map((video) => (
+                  {(showAllVideos ? videos.slice(0, EXTENDED_MAX_VIDEOS) : videos.slice(0, MAX_VIDEOS)).map((video) => (
                     <SwiperSlide key={video.id} className="video-slide">
                       <div className="video-item">
                         <iframe
-                          src={`https://www.youtube.com/embed/${video.key}`}
+                          id={`youtube-player-${video.id}`}
+                          src={`https://www.youtube.com/embed/${video.key}?enablejsapi=1`}
                           title={video.name}
                           frameBorder="0"
                           allowFullScreen
@@ -305,6 +385,21 @@ const MovieDetail = () => {
                   ))}
                 </Swiper>
               </div>
+
+              {/* 加载更多按钮 */}
+              {videos.length > MAX_VIDEOS && (
+                <div className="load-more-container">
+                  <button
+                    onClick={() => setShowAllVideos(!showAllVideos)}
+                    className="load-more-button"
+                  >
+                    {showAllVideos
+                      ? (videos.length > EXTENDED_MAX_VIDEOS ? getTranslation('showLessVideos', language) || '显示更少' : getTranslation('loadMoreVideos', language) || '加载更多视频')
+                      : getTranslation('loadMoreVideos', language) || '加载更多视频'
+                    }
+                  </button>
+                </div>
+              )}
             </div>
           )}
 

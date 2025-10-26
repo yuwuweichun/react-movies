@@ -365,6 +365,16 @@
     @apply text-gray-100 text-base;
   }
 
+  /* 加载更多按钮样式 */
+  .load-more-container {
+    @apply mt-6 text-center;
+  }
+
+  .load-more-button {
+    @apply px-6 py-3 bg-light-100/10 text-white rounded-lg hover:bg-light-100/20 transition-colors duration-300 border border-light-100/20;
+    @apply font-medium text-base;
+  }
+
   /* 移动端视频轮播图样式 */
   @media (max-width: 768px) {
     .video-slide {
