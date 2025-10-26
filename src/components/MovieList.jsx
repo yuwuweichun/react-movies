@@ -94,7 +94,7 @@ const MovieList = () => {
         // 否则，使用 discover API 并应用筛选条件
         let sortBy = appliedFilters.sortBy || 'popularity.desc';
         endpoint = `${API_BASE_URL}/discover/movie?sort_by=${sortBy}&page=${page}&language=${apiLanguage}`;
-        if (appliedFilters.region) endpoint += `&with_original_language=${appliedFilters.region}`; // TMDB uses with_original_language for region filtering
+        if (appliedFilters.region) endpoint += `&with_origin_country=${appliedFilters.region}`;
         if (appliedFilters.genres && appliedFilters.genres.length > 0) endpoint += `&with_genres=${appliedFilters.genres.join(',')}`;
         if (appliedFilters.year) endpoint += `&primary_release_year=${appliedFilters.year}`;
       }
