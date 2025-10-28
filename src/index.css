@@ -650,3 +650,131 @@
     display: none;
   }
 }
+
+/* ===== Reviews ===== */
+/* Review card */
+.review-card {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: var(--color-dark-100, #0f0d23);
+  border-radius: 16px;
+  box-shadow: inset 0 2px 4px rgba(206, 206, 251, 0.1);
+  margin-bottom: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+  box-shadow: inset 0 4px 8px rgba(206, 206, 251, 0.15), 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* Review avatar */
+.review-avatar img,
+.review-avatar .avatar-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  background: var(--color-primary, #030014);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Review content */
+.review-content {
+  flex: 1;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.review-author {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #f5c518;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.review-date {
+  color: var(--color-gray-100, #9ca4ab);
+  font-size: 14px;
+}
+
+/* Review text */
+.review-text {
+  color: var(--color-gray-100, #9ca4ab);
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.read-more-btn {
+  background: none;
+  border: none;
+  color: var(--color-light-100, #cecefb);
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 8px;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.read-more-btn:hover {
+  opacity: 0.8;
+}
+
+/* Reviews section */
+.reviews-section h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.no-reviews-section {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-gray-100, #9ca4ab);
+}
+
+/* Responsive design for reviews */
+@media (max-width: 768px) {
+  .review-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .review-avatar img,
+  .review-avatar .avatar-placeholder {
+    width: 40px;
+    height: 40px;
+  }
+
+  .review-header {
+    gap: 8px;
+  }
+
+  .review-author {
+    font-size: 15px;
+  }
+}

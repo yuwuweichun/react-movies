@@ -66,7 +66,15 @@ export const translations = {
     movieNotFound: '未找到电影信息',
     error: '错误',
     loading: '加载中...',
-    
+
+    // 影评相关
+    movieReviews: '影评',
+    noReviewsAvailable: '暂无影评',
+    loadingReviews: '正在加载影评...',
+    reviewsError: '影评加载失败，请稍后重试',
+    readMore: '阅读更多',
+    showLess: '收起',
+
     // 语言切换
     currentLanguage: '当前语言',
     switchTo: '切换到'
@@ -138,7 +146,15 @@ export const translations = {
     movieNotFound: 'Movie information not found',
     error: 'Error',
     loading: 'Loading...',
-    
+
+    // Reviews
+    movieReviews: 'Reviews',
+    noReviewsAvailable: 'No reviews available',
+    loadingReviews: 'Loading reviews...',
+    reviewsError: 'Failed to load reviews',
+    readMore: 'Read more',
+    showLess: 'Show less',
+
     // Language switching
     currentLanguage: 'Current Language',
     switchTo: 'Switch to'

@@ -5,8 +5,19 @@ import { useParams } from 'react-router-dom'
 
 // 导入自定义组件
 import Spinner from './Spinner.jsx'
+// 导入 shadow-review 卡片组件
+import ReviewCard from './ReviewCard.jsx'
 // 导入自定义 hooks
 import { useLanguage } from '../contexts/LanguageContext.jsx'
+import useInfiniteScroll from '../hooks/useInfiniteScroll.js'
+import useMovieReviews from '../hooks/useMovieReviews.js'
+// 导入API服务
+import {
+  getImageUrl,
+  fetchMovieVideos as apiFetchMovieVideos,
+  fetchMovieDetails as apiFetchMovieDetails,
+  fetchMovieCredits as apiFetchMovieCredits
+} from '../services/movieAPI.js'
 // 导入翻译配置
 import { getTranslation, formatRuntime, formatDate } from '../config/translations.js'
 
@@ -18,27 +29,12 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
 
-// TMDB (The Movie Database) API 的基础 URL
-const API_BASE_URL = 'https://api.themoviedb.org/3';
-
-// 从环境变量中获取 API 密钥
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-
-// API 请求的配置选项
-const API_OPTIONS = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${API_KEY}`  // 使用 Bearer token 进行身份验证
-  }
-}
-
 const MovieDetail = () => {
   // 获取路由参数中的电影ID
   const { id } = useParams();
   // 获取语言上下文
   const { language, apiLanguage } = useLanguage();
-  
+
   // ========== 状态管理 ==========
   const [movie, setMovie] = useState(null);           // 电影详情数据
   const [credits, setCredits] = useState(null);       // 演员和制作人员信息
@@ -49,51 +45,45 @@ const MovieDetail = () => {
   const [showAllVideos, setShowAllVideos] = useState(false); // 是否显示所有视频
   const playersRef = useRef({}); // 存储所有播放器实例的引用
 
+  // 使用自定义hook管理影评
+  const {
+    reviews,
+    reviewsLoading,
+    hasMoreReviews,
+    loadMoreReviews
+  } = useMovieReviews(id, apiLanguage);
+
   // 视频显示数量限制
   const MAX_VIDEOS = 6;
   const EXTENDED_MAX_VIDEOS = 24;
 
-  // ========== 获取图片URL的辅助函数 ==========
-  const getImageUrl = (path, size = 'w500') => {
-    return path ? `https://image.tmdb.org/t/p/${size}${path}` : '/no-movie.png';
-  };
-
   // ========== 获取视频数据的函数 ==========
   const fetchVideos = useCallback(async (movieId, language) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/movie/${movieId}/videos?language=${language}`, API_OPTIONS);
-      if (!response.ok) {
-        throw new Error('Failed to fetch videos');
-      }
-      const data = await response.json();
-      return data.results || [];
+      return await apiFetchMovieVideos(movieId, language);
     } catch (error) {
       console.error('Error fetching videos:', error);
       return [];
     }
   }, []);
 
+  // ========== 使用无限滚动 hook ==========
+  const lastReviewRef = useInfiniteScroll(loadMoreReviews, hasMoreReviews, reviewsLoading);
+
   // ========== 获取电影详情的函数 ==========
   const fetchMovieDetails = useCallback(async (movieId) => {
+    if (!movieId) return;
+
     try {
       setLoading(true);
       setError('');
 
       // 并行请求电影详情、演员信息和视频（使用动态语言）
-      const [movieResponse, creditsResponse, videosResponse] = await Promise.all([
-        fetch(`${API_BASE_URL}/movie/${movieId}?language=${apiLanguage}`, API_OPTIONS),
-        fetch(`${API_BASE_URL}/movie/${movieId}/credits?language=${apiLanguage}`, API_OPTIONS),
+      const [movieData, creditsData, videosResponse] = await Promise.all([
+        apiFetchMovieDetails(movieId, apiLanguage),
+        apiFetchMovieCredits(movieId, apiLanguage),
         fetchVideos(movieId, apiLanguage)
       ]);
-
-      // 检查响应是否成功
-      if (!movieResponse.ok || !creditsResponse.ok) {
-        throw new Error('Failed to fetch movie details');
-      }
-
-      // 解析JSON数据
-      const movieData = await movieResponse.json();
-      const creditsData = await creditsResponse.json();
 
       // 处理视频数据：优先使用当前语言，如果没有则fallback到英文
       let videoData = videosResponse;
@@ -121,6 +111,9 @@ const MovieDetail = () => {
       fetchMovieDetails(id);
     }
   }, [id, fetchMovieDetails]); // 使用fetchMovieDetails依赖
+
+  // ========== 影评初始化加载 ==========
+  // 使用 useMovieReviews hook 时，数据获取是自动的，不需要手动设置useEffect
 
   // 加载 YouTube IFrame API 脚本
   useEffect(() => {
@@ -447,8 +440,8 @@ const playCurrentVideo = useCallback((swiper) => {
               <div className="cast-list">
                 {credits.cast.slice(0, 6).map(actor => (
                   <div key={actor.id} className="cast-member">
-                    <img 
-                      src={getImageUrl(actor.profile_path, 'w185')} 
+                    <img
+                      src={getImageUrl(actor.profile_path, 'w185')}
                       alt={actor.name}
                       className="cast-photo"
                     />
@@ -461,6 +454,41 @@ const playCurrentVideo = useCallback((swiper) => {
               </div>
             </div>
           )}
+
+          {/* 影评区域 */}
+          <div className="reviews-section">
+            <h2>{getTranslation('movieReviews', language)}</h2>
+            {/* 显示已加载的影评 */}
+            {reviews.length > 0 && (
+              <div className="reviews-list">
+                {reviews.map((review, index) => (
+                  <ReviewCard
+                    key={review.id}
+                    review={review}
+                    language={language}
+                    ref={index === reviews.length - 1 ? lastReviewRef : null}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* 加载状态显示 */}
+            {reviewsLoading && (
+              <div className="loading-container">
+                <Spinner />
+                <p className="text-gray-100 mt-4">
+                  {reviews.length > 0 ? getTranslation('loadingReviews', language) : getTranslation('loadingMovieDetails', language)}
+                </p>
+              </div>
+            )}
+
+            {/* 当没有影评时显示提示 */}
+            {reviews.length === 0 && !reviewsLoading && (
+              <div className="no-reviews-section">
+                <p>{getTranslation('noReviewsAvailable', language)}</p>
+              </div>
+            )}
+          </div>
         </section>
       </div>
     </main>
