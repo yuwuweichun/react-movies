@@ -92,8 +92,10 @@ const MovieList = () => {
         endpoint = `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}&language=${apiLanguage}`;
       } else {
         // 否则，使用 discover API 并应用筛选条件
+        // 如果没有指定 sortBy，则默认为 'popularity.desc'
         let sortBy = appliedFilters.sortBy || 'popularity.desc';
         endpoint = `${API_BASE_URL}/discover/movie?sort_by=${sortBy}&page=${page}&language=${apiLanguage}`;
+
         if (appliedFilters.region) endpoint += `&with_origin_country=${appliedFilters.region}`;
         if (appliedFilters.genres && appliedFilters.genres.length > 0) endpoint += `&with_genres=${appliedFilters.genres.join(',')}`;
         if (appliedFilters.year) endpoint += `&primary_release_year=${appliedFilters.year}`;

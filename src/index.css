@@ -516,7 +516,7 @@
   }
 
   .filter-sidebar-content {
-    @apply p-6 h-full;
+    @apply p-6 h-full overflow-y-auto hide-scrollbar; /* 添加 overflow-y-auto 和 hide-scrollbar */
   }
 
   /* Monospace font for year dropdown */

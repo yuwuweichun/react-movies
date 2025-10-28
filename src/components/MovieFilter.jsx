@@ -164,8 +164,19 @@ const MovieFilter = ({
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2 font-bold text-white">{getTranslation('sortByRating', language) || 'Sort by Rating'}:</label>
+            <label className="block mb-2 font-bold text-white">{getTranslation('sortBy', language) || 'Sort By'}:</label>
             <div className="space-y-2">
+              <label className="flex items-center text-white">
+                <input
+                  type="radio"
+                  name="sortBy"
+                  value="popularity.desc"
+                  checked={selectedSortBy === 'popularity.desc'}
+                  onChange={(e) => setSelectedSortBy(e.target.value)}
+                  className="mr-2"
+                />
+                {getTranslation('sortByPopularity', language) || 'Popularity Descending'}
+              </label>
               <label className="flex items-center text-white">
                 <input
                   type="radio"
@@ -175,25 +186,14 @@ const MovieFilter = ({
                   onChange={(e) => setSelectedSortBy(e.target.value)}
                   className="mr-2"
                 />
-                {getTranslation('sortDescending', language) || 'Highest Rated First'}
-              </label>
-              <label className="flex items-center text-white">
-                <input
-                  type="radio"
-                  name="sortBy"
-                  value=""
-                  checked={selectedSortBy === ''}
-                  onChange={(e) => setSelectedSortBy(e.target.value)}
-                  className="mr-2"
-                />
-                {getTranslation('noSort', language) || 'No Sorting'}
+                {getTranslation('sortByRating', language) || 'Rating Descending'}
               </label>
             </div>
           </div>
 
           <div className="flex gap-4">
-            <button className="flex-1 p-3 rounded border-none text-base font-bold cursor-pointer transition-colors duration-200 bg-primary text-white hover:bg-primary/80" onClick={applyFilters}>{getTranslation('applyFilters', language)}</button>
-            <button className="flex-1 p-3 rounded border-none text-base font-bold cursor-pointer transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500" onClick={resetFilters}>{getTranslation('resetFilters', language)}</button>
+            <button className="flex-1 p-3 rounded border-none text-base font-bold cursor-pointer transition-colors duration-200 bg-[#4A5565] text-white hover:bg-[#4A5565]/80" onClick={resetFilters}>{getTranslation('resetFilters', language)}</button>
+            <button className="flex-1 p-3 rounded border-none text-base font-bold cursor-pointer transition-colors duration-200 bg-[#4A5565] text-white hover:bg-[#4A5565]/80" onClick={applyFilters}>{getTranslation('applyFilters', language)}</button>
           </div>
         </div>
       </div>

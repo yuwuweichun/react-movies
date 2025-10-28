@@ -394,8 +394,8 @@ const playCurrentVideo = useCallback((swiper) => {
                     className="load-more-button"
                   >
                     {showAllVideos
-                      ? (videos.length > EXTENDED_MAX_VIDEOS ? getTranslation('showLessVideos', language) || '显示更少' : getTranslation('loadMoreVideos', language) || '加载更多视频')
-                      : getTranslation('loadMoreVideos', language) || '加载更多视频'
+                      ? getTranslation('showLessVideos', language) || '较少显示'
+                      : getTranslation('loadMoreVideos', language) || '加载更多'
                     }
                   </button>
                 </div>

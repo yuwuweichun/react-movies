@@ -4,3 +4,4 @@ This rule outlines development workflow preferences, specifically regarding comm
 ## Development workflow
 - Avoid requesting execution of `npm run dev` command, as the user maintains the development server manually.
 - Avoid using `open` command, as it is not recognized in Windows CMD; use `start` instead for opening files or URLs.
+- Avoid using `start http://localhost:5173` command, as the user maintains the development server manually.
