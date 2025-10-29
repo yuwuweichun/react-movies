@@ -1,50 +1,53 @@
 <div align="center">
+  <div style="margin-bottom: 20px;">
+    <a href="#english"><img src="https://img.shields.io/badge/Language-English-blue.svg" alt="English"/></a>
+    <a href="#chinese"><img src="https://img.shields.io/badge/版本-中文-red.svg" alt="中文"/></a>
+  </div>
+
+  <div style="margin-bottom: 20px; font-size: 14px;">
+    <strong>👆 点击上方语言标签，快速跳转到相应版本 | ↗️ Scroll to your preferred language version</strong>
+  </div>
+
   <br />
     <a href="https://www.youtube.com/watch?v=dCLhUialKPQ" target="_blank">
       <img src="public/readme/hero.png" alt="Project Banner">
     </a>
   <br />
-  
+
   <div>
     <img src="https://img.shields.io/badge/-React_JS-black?style=for-the-badge&logoColor=white&logo=react&color=61DAFB" alt="react.js" />
     <img src="https://img.shields.io/badge/-Appwrite-black?style=for-the-badge&logoColor=white&logo=appwrite&color=FD366E" alt="appwrite" />
     <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
   </div>
-
-  <h3 align="center">A Movie Application</h3>
-
-   <div align="center">
-     Build this project step by step with our detailed tutorial on <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> YouTube. Join the JSM family!
-    </div>
 </div>
 
-## 📋 <a name="table">Table of Contents</a>
+---
 
-1. 🤖 [Introduction](#introduction)
-2. ⚙️ [Tech Stack](#tech-stack)
-3. 🔋 [Features](#features)
-4. 🤸 [Quick Start](#quick-start)
-5. 🕸️ [Snippets (Code to Copy)](#snippets)
-6. 🔗 [Assets](#links)
-7. 🚀 [More](#more)
+<h2 align="center"><a name="english">🇺🇸 English Version</a></h2>
 
-## 🚨 Tutorial
+## <a name="english">React Movie App - Enhanced Fork 🇺🇸</a>
 
-This repository contains the code corresponding to an in-depth tutorial available on our YouTube channel, <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a>.
+<div align="center">
+  An enhanced movie application based on <a href="https://github.com/adrianhajdin/react-movies" target="_blank"><b>adrianhajdin/react-movies</b></a> fork, adding infinite scroll, detail pages, filtering, and internationalization features. Follow the detailed tutorial from <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> to build it step by step.
+</div>
 
-If you prefer visual learning, this is the perfect resource for you. Follow our tutorial to learn how to build projects like these step-by-step in a beginner-friendly manner!
+## 📋 <a name="table-en">Table of Contents</a>
 
-<a href="https://www.youtube.com/watch?v=dCLhUialKPQ" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/1736fca5-a031-4854-8c09-bc110e3bc16d" /></a>
+1. 📑 [Introduction](#introduction-en)
+2. 💻 [Tech Stack](#tech-stack-en)
+3. ⚙️ [Features](#features-en)
+4. ⚡ [Quick Start](#quick-start-en)
 
-## <a name="introduction">🤖 Introduction</a>
 
-Built with React.js for the user interface, Appwrite for backend services, and styled with TailwindCSS, this Movie App lets users browse trending movies, search titles, and explore content using the TMDB API. It features a responsive layout and a sleek, modern design.
 
-If you're getting started and need assistance or face any bugs, join our active Discord community with over **50k+** members. It's a place where people help each other out.
 
-<a href="https://discord.com/invite/n6EdbFJ" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/618f4872-1e10-42da-8213-1d69e486d02e" /></a>
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
+## <a name="introduction-en">📑 Introduction</a>
+
+Built with React.js for the user interface, Appwrite for backend services, and styled with TailwindCSS, this enhanced Movie App lets users browse trending movies, search titles, explore detailed movie information, and enjoy a fully internationalized experience using the TMDB API. This fork adds infinite scroll loading, comprehensive movie detail pages, advanced filtering capabilities, and seamless language switching between Chinese and English.
+
+
+## <a name="tech-stack-en">💻 Tech Stack</a>
 
 - **[Appwrite](https://appwrite.io/)** is an open-source Backend-as-a-Service (BaaS) platform that provides developers with a set of APIs to manage authentication, databases, storage, and more, enabling rapid development of secure and scalable applications.
 
@@ -56,8 +59,11 @@ If you're getting started and need assistance or face any bugs, join our active 
 
 - **[Vite](https://vite.dev/)** is a modern build tool that provides a fast development environment for frontend projects. It offers features like hot module replacement (HMR) and optimized builds, enhancing the development experience and performance.
 
+- **[React Router DOM](https://reactrouter.com/)** is a routing library for React that enables navigation between different components and pages, allowing for the creation of multi-page experiences in single-page applications.
 
-## <a name="features">🔋 Features</a>
+- **[Swiper](https://swiperjs.com/)** is a modern, touch-enabled slider library that provides smooth, customizable carousel effects for displaying content like movie trailers and images.
+
+## <a name="features-en">⚙️ Features</a>
 
 👉 **Browse All Movies**: Explore a wide range of movies available on the platform.
 
@@ -65,13 +71,21 @@ If you're getting started and need assistance or face any bugs, join our active 
 
 👉 **Trending Movies Algorithm**: Displays trending movies based on a dynamic algorithm.
 
+👉 **Movie Detail Pages**: Click on any movie to view comprehensive details including trailers, cast information, and user reviews.
+
+👉 **Infinite Scroll Loading**: Smooth infinite scroll implementation for loading more content as you browse movies and reviews.
+
+👉 **Advanced Movie Filtering**: Filter movies by region, genre, year, and sorting options for a personalized browsing experience.
+
+👉 **Language Switching**: Seamless switching between Chinese and English interfaces with full internationalization support.
+
 👉 **Modern UI/UX**: A sleek and user-friendly interface designed for a great experience.
 
 👉 **Responsiveness**: Fully responsive design that works seamlessly across devices.
 
 and many more, including code architecture and reusability
 
-## <a name="quick-start">🤸 Quick Start</a>
+## <a name="quick-start-en">⚡ Quick Start</a>
 
 Follow these steps to set up the project locally on your machine.
 
@@ -86,7 +100,7 @@ Make sure you have the following installed on your machine:
 **Cloning the Repository**
 
 ```bash
-git clone https://github.com/adrianhajdin/react-movies.git
+git clone https://github.com/yuwuweichun/react-movies.git
 cd react-movies
 
 ```
@@ -121,221 +135,115 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
 
-## <a name="snippets">🕸️ Snippets</a>
+---
 
-<details>
-<summary><code>index.css</code></summary>
+<h2 align="center"><a name="chinese">🇨🇳 中文版本</a></h2>
 
-```css
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+## <a name="chinese">React Movie App - 增强版分支</a>
 
-@import "tailwindcss";
+<div align="center">
+  一个增强的电影应用，基于 <a href="https://github.com/adrianhajdin/react-movies" target="_blank"><b>adrianhajdin/react-movies</b></a> 的fork版本，添加了无限滚动、详情页、筛选和国际化功能。跟随 <a href="https://www.youtube.com/@javascriptmastery/videos" target="_blank"><b>JavaScript Mastery</b></a> 的详细教程一步步构建。
+</div>
 
-@theme {
-  --color-primary: #030014;
+## 📋 <a name="table">目录</a>
 
-  --color-light-100: #cecefb;
-  --color-light-200: #a8b5db;
+1. 📑 [介绍](#introduction)
+2. 💻 [技术栈](#tech-stack)
+3. ⚙️ [功能特性](#features)
+4. ⚡ [快速开始](#quick-start)
 
-  --color-gray-100: #9ca4ab;
 
-  --color-dark-100: #0f0d23;
+## <a name="introduction">📑 介绍</a>
 
-  --font-dm-sans: DM Sans, sans-serif;
+使用React.js构建用户界面，Appwrite提供后端服务，使用TailwindCSS进行样式设计，这个增强版的电影应用让用户能够浏览热门电影、搜索影片、探索详细的电影信息，并享受使用TMDB API的完全国际化体验。本fork版本添加了无限滚动加载、全面的电影详情页面、高级的筛选功能，以及中英语言的无缝切换。
 
-  --breakpoint-xs: 480px;
+## <a name="tech-stack">💻 技术栈</a>
 
-  --background-image-hero-pattern: url("/hero-bg.png");
-}
+- **[Appwrite](https://appwrite.io/)** 是一个开源的 Backend-as-a-Service (BaaS) 平台，为开发者提供了一套用于管理认证、数据库、存储等的API，能够快速开发安全且可扩展的应用程序。
 
-@layer base {
-  body {
-    font-family: "DM Sans", serif;
-    font-optical-sizing: auto;
-    background: #030014;
-  }
+- **[React.js](https://react.dev/reference/react)** 是Meta开发的用于构建用户界面的JavaScript库。它允许开发者创建可重用UI组件，这些组件管理自己的状态，从而提高代码的高效性和可维护性。React广泛用于开发单页应用程序(SPA)，因为其虚拟DOM提高了性能和维护的简易性。
 
-  h1 {
-    @apply mx-auto max-w-4xl text-center text-5xl font-bold leading-tight tracking-[-1%] text-white sm:text-[64px] sm:leading-[76px];
-  }
+- **[React-use](https://github.com/streamich/react-use)** 是一个精选的React钩子合集，可简化React应用中管理状态、副作用和生命周期事件等常见任务，促进更简洁和更可维护的代码。
 
-  h2 {
-    @apply text-2xl font-bold text-white sm:text-3xl;
-  }
+- **[Tailwind CSS](https://tailwindcss.com/)** 是一种实用优先的CSS框架，提供低级别的实用类来构建自定义设计，而无需编写自定义CSS，从而实现了快速和响应式的UI开发。
 
-  main {
-    @apply min-h-screen relative bg-primary;
-  }
+- **[Vite](https://vite.dev/)** 是一个现代化的构建工具，为前端项目提供快速的开发环境。它具有热模块替换(HMR)和优化构建等特性，增强了开发体验和性能。
 
-  header {
-    @apply sm:mt-10 mt-5;
-  }
+- **[React Router DOM](https://reactrouter.com/)** 是React的路由库，使不同组件和页面间的导航成为可能，支持在单页应用中创建多页面体验。
 
-  header img {
-    @apply w-full max-w-lg h-auto object-contain mx-auto drop-shadow-md;
-  }
-}
+- **[Swiper](https://swiperjs.com/)** 是一个现代化的触控友好的滑块库，提供流畅、可定制的轮播效果，用于显示电影预告片和图像等内容。
 
-@layer components {
-  .pattern {
-    @apply bg-hero-pattern w-full h-screen bg-center bg-cover absolute z-0;
-  }
 
-  .wrapper {
-    @apply px-5 py-12 xs:p-10 max-w-7xl mx-auto flex flex-col relative z-10;
-  }
+## <a name="features">⚙️ 功能特性</a>
 
-  .trending {
-    @apply mt-20;
+👉 **浏览全部电影**: 在平台上探索广泛的电影资源。
 
-    & ul {
-      @apply flex flex-row overflow-y-auto gap-5 -mt-10 w-full hide-scrollbar;
-    }
+👉 **搜索电影**: 使用搜索功能轻松查找特定电影。
 
-    & ul li {
-      @apply min-w-[230px] flex flex-row items-center;
-    }
+👉 **热门电影算法**: 基于动态算法显示热门电影。
 
-    & ul li p {
-      @apply fancy-text mt-[22px] text-nowrap;
-    }
+👉 **电影详情页**: 点击任意电影查看详细信息，包括预告片、演员表和用户评价。
 
-    & ul li img {
-      @apply w-[127px] h-[163px] rounded-lg object-cover -ml-3.5;
-    }
-  }
+👉 **无限滚动加载**: 浏览电影和影评时实现流畅的无限滚动加载。
 
-  .search {
-    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
+👉 **高级电影筛选**: 按地区、类型、年份和排序选项筛选电影，获得个性化浏览体验。
 
-    & div {
-      @apply relative flex items-center;
-    }
+👉 **语言切换**: 无缝切换中英文界面，完全支持国际化。
 
-    & img {
-      @apply absolute left-2 h-5 w-5;
-    }
+👉 **现代化UI/UX**: 设计精美的用户界面，提供优秀的用户体验。
 
-    & input {
-      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-gray-200 placeholder-light-200 outline-hidden;
-    }
-  }
+👉 **响应式设计**: 完全响应式设计，在所有设备上都运行良好。
 
-  .all-movies {
-    @apply space-y-9;
+还有更多功能，包括代码架构和可重用性
 
-    & ul {
-      @apply grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
-    }
-  }
+## <a name="quick-start">⚡ 快速开始</a>
 
-  .movie-card {
-    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
+按照以下步骤在本地机器上设置项目。
 
-    & img {
-      @apply rounded-lg h-auto w-full;
-    }
+**前提条件**
 
-    & h3 {
-      @apply text-white font-bold text-base line-clamp-1;
-    }
+确保您的机器上安装了以下软件：
 
-    & .content {
-      @apply mt-2 flex flex-row items-center flex-wrap gap-2;
-    }
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/en)
+- [npm](https://www.npmjs.com/) (Node Package Manager)
 
-    & .rating {
-      @apply flex flex-row items-center gap-1;
-    }
+**克隆仓库**
 
-    & .rating img {
-      @apply size-4 object-contain;
-    }
+```bash
+git clone https://github.com/yuwuweichun/react-movies.git
+cd react-movies
 
-    & .rating p {
-      @apply font-bold text-base text-white;
-    }
-
-    & .content span {
-      @apply text-sm text-gray-100;
-    }
-
-    & .content .lang {
-      @apply capitalize text-gray-100 font-medium text-base;
-    }
-
-    & .content .year {
-      @apply text-gray-100 font-medium text-base;
-    }
-  }
-}
-
-@utility text-gradient {
-  @apply bg-linear-to-r from-[#D6C7FF] to-[#AB8BFF] bg-clip-text text-transparent;
-}
-
-@utility fancy-text {
-  -webkit-text-stroke: 5px rgba(206, 206, 251, 0.5);
-  font-size: 190px;
-  font-family: "Bebas Neue", sans-serif;
-}
-
-@utility hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
 ```
 
-</details>
+**安装依赖**
 
-<details>
-<summary><code>components/Spinner.jsx</code></summary>
+使用npm安装项目依赖：
 
-```jsx
-import React from 'react'
-
-const Spinner = () => {
-  return (
-    <div role="status">
-      <svg aria-hidden="true"
-           className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-indigo-600"
-           viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-          fill="currentColor"/>
-        <path
-          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-          fill="currentFill"/>
-      </svg>
-      <span className="sr-only">Loading...</span>
-    </div>
-  )
-}
-export default Spinner
+```bash
+npm install
 ```
-</details>
 
+**设置环境变量**
 
-## <a name="links">🔗 Assets</a>
+在项目根目录创建名为`.env.local`的文件，并添加以下内容：
 
-Assets and snippets used in the project can be found in the **[video kit](https://jsm.dev/react25-kit)**.
+```env
+VITE_TMDB_API_KEY=
 
-<a href="https://jsm.dev/react25-kit" target="_blank">
-  <img src="public/readme/videokit.png" alt="Video Kit Banner">
-</a>
+VITE_APPWRITE_PROJECT_ID=
+VITE_APPWRITE_DATABASE_ID=
+VITE_APPWRITE_COLLECTION_ID=
+```
 
-## <a name="more">🚀 More</a>
+使用您的实际 **[TheMovieDatabase API](https://developer.themoviedb.org/reference/intro/getting-started)** 和 **[Appwrite](https://apwr.dev/JSM050)** 凭据替换占位符值。
 
-**Advance your skills with Next.js Pro Course**
+**运行项目**
 
-Enjoyed creating this project? Dive deeper into our PRO courses for a richer learning adventure. They're packed with
-detailed explanations, cool features, and exercises to boost your skills. Give it a go!
+```bash
+npm run dev
+```
 
-<a href="https://jsm.dev/react25-jsmpro" target="_blank">
-  <img src="public/readme/jsmpro.png" alt="Project Banner">
-</a>
+在浏览器中打开 [http://localhost:5173](http://localhost:5173) 查看项目。
+
+---
