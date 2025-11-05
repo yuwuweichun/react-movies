@@ -1,5 +1,6 @@
 // 导入 React 的核心 hooks
 import { useEffect, useState, useCallback, useRef } from 'react'
+import PropTypes from 'prop-types'
 // 导入 React Router 相关组件
 import { useParams, useNavigate } from 'react-router-dom'
 
@@ -29,9 +30,11 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
 
-const MovieDetail = () => {
-  // 获取路由参数中的电影ID
-  const { id } = useParams();
+const MovieDetail = ({ movieId, isModal = false }) => {
+  // 获取路由参数中的电影ID，如果没有传入 movieId 则使用路由参数
+  const { id: routeId } = useParams();
+  const id = movieId || routeId;
+
   // 获取语言上下文
   const { language, apiLanguage } = useLanguage();
   const navigate = useNavigate(); // 新增
@@ -253,73 +256,79 @@ const playCurrentVideo = useCallback((swiper) => {
   }
 
   return (
-    <main>
-      {/* 背景装饰图案 */}
-      <div className="pattern"/>
+    <main className={isModal ? 'movie-detail-modal' : ''}>
+      {/* 背景装饰图案 - 只在非模态框模式下显示 */}
+      {!isModal && <div className="pattern"/>}
 
-      <div className="wrapper">
-        {/* 返回按钮 */}
-        <div className="back-button-container">
-          <button
-            onClick={() => navigate(-1)}
-            className="back-button"
-            title={getTranslation('backToMovies', language)}
-            style={{ display: 'flex', alignItems: 'center', gap: 4 }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18l-6-6 6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            {getTranslation('backToMovies', language)}
-          </button>
-        </div>
+      <div className={isModal ? 'movie-detail-modal-content' : 'wrapper'}>
+        {/* 返回按钮 - 只在非模态框模式下显示 */}
+        {!isModal && (
+          <div className="back-button-container">
+            <button
+              onClick={() => navigate(-1)}
+              className="back-button"
+              title={getTranslation('backToMovies', language)}
+              style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              {getTranslation('backToMovies', language)}
+            </button>
+          </div>
+        )}
 
         {/* 电影详情头部区域 */}
         <section className="movie-detail-header">
-          {/* 背景图片 */}
-          <div 
-            className="movie-backdrop"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${getImageUrl(movie.backdrop_path, 'w1280')})`
-            }}
-          />
+                <div 
+                className="movie-backdrop"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${getImageUrl(movie.backdrop_path, 'w1280')})`
+                }}
+                />
 
-          <div className="movie-info-overlay">
-            <div className="movie-poster-container">
-              <img 
-                src={getImageUrl(movie.poster_path, 'w500')} 
-                alt={movie.title}
-                className="movie-poster"
-              />
-            </div>
-
-            <div className="movie-basic-info">
-              <h1 className="movie-title">{movie.title}</h1>
-              {movie.tagline && (
-                <p className="movie-tagline">&ldquo;{movie.tagline}&rdquo;</p>
-              )}
-
-              <div className="movie-meta">
-                <div className="rating">
-                  <img src="/star.svg" alt="Star Icon" />
-                  <span>{movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}</span>
-                  <span className="vote-count">({movie.vote_count} {getTranslation('voteCount', language)})</span>
+                <div className="movie-info-overlay">
+                <div className="movie-poster-container">
+                  <img 
+                  src={getImageUrl(movie.poster_path, 'w500')} 
+                  alt={movie.title}
+                  className="movie-poster"
+                  />
                 </div>
 
-                <div className="meta-details">
-                  <span>{formatDate(movie.release_date, language)}</span>
-                  <span>•</span>
-                  <span>{formatRuntime(movie.runtime, language)}</span>
-                  {movie.genres && movie.genres.length > 0 && (
+                <div className="movie-basic-info">
+                  <h1
+                  className="movie-title"
+                  style={{ marginInline: 0, maxWidth: 'none', textAlign: 'left' }}
+                  >
+                  {movie.title}
+                  </h1>
+                  {movie.tagline && (
+                  <p className="movie-tagline">&ldquo;{movie.tagline}&rdquo;</p>
+                  )}
+
+                  <div className="movie-meta">
+                  <div className="rating">
+                    <img src="/star.svg" alt="Star Icon" />
+                    <span>{movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}</span>
+                    <span className="vote-count">({movie.vote_count} {getTranslation('voteCount', language)})</span>
+                  </div>
+
+                  <div className="meta-details">
+                    <span>{formatDate(movie.release_date, language)}</span>
+                    <span>•</span>
+                    <span>{formatRuntime(movie.runtime, language)}</span>
+                    {movie.genres && movie.genres.length > 0 && (
                     <>
                       <span>•</span>
                       <span>{movie.genres.map(genre => genre.name).join(', ')}</span>
                     </>
-                  )}
+                    )}
+                  </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
+                </div>
+              </section>
 
         {/* 电影详情内容区域 */}
         <section className="movie-detail-content">
@@ -513,6 +522,11 @@ const playCurrentVideo = useCallback((swiper) => {
       </div>
     </main>
   );
+};
+
+MovieDetail.propTypes = {
+  movieId: PropTypes.number,
+  isModal: PropTypes.bool
 };
 
 export default MovieDetail;

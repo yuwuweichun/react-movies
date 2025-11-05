@@ -1,14 +1,21 @@
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 
 // 电影卡片组件：显示单个电影的详细信息
 const MovieCard = ({ movie:
-  { id, title, vote_average, poster_path, release_date, original_language }
+  { id, title, vote_average, poster_path, release_date, original_language },
+  onCardClick
 }) => {
+  const handleClick = () => {
+    if (onCardClick) {
+      onCardClick(id);
+    }
+  };
+
   return (
-    <Link
-      to={`/movie/${id}`}
+    <div
       className="movie-card-link"
+      onClick={handleClick}
+      style={{ cursor: 'pointer' }}
     >
       <div className="movie-card">
         {/* 电影海报图片 */}
@@ -31,12 +38,12 @@ const MovieCard = ({ movie:
           </div>
 
             <span>•</span>  {/* 分隔符 */}
-            
+
             {/* 语言信息 */}
             <p className="lang">{original_language}</p>
 
             <span>•</span>  {/* 分隔符 */}
-            
+
             {/* 上映年份 */}
             <p className="year">
               {release_date ? release_date.split('-')[0] : 'N/A'}  {/* 从日期字符串中提取年份 */}
@@ -44,7 +51,7 @@ const MovieCard = ({ movie:
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -57,7 +64,8 @@ MovieCard.propTypes = {
     poster_path: PropTypes.string,                // 海报路径，可选
     release_date: PropTypes.string,               // 上映日期，可选
     original_language: PropTypes.string           // 原始语言，可选
-  }).isRequired
+  }).isRequired,
+  onCardClick: PropTypes.func                      // 点击回调函数，可选
 }
 
 export default MovieCard

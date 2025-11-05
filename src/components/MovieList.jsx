@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react'
 import Search from './Search.jsx'        // 搜索输入框组件
 import Spinner from './Spinner.jsx'      // 加载动画组件
 import MovieCard from './MovieCard.jsx'  // 电影卡片组件
+import MovieDetail from './MovieDetail.jsx' // 电影详情组件
 import MovieFilter from './MovieFilter.jsx'; // 电影筛选组件
 // 导入自定义 hooks
 import useInfiniteScroll from '../hooks/useInfiniteScroll.js'  // 无限滚动 hook
@@ -61,6 +62,10 @@ const MovieList = () => {
 
   // 热门电影列表（从数据库获取）
   const [trendingMovies, setTrendingMovies] = useState([]);
+
+  // 模态框状态
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 现在由于使用条件渲染，组件不会被卸载，所以不需要滚动位置恢复逻辑
 
@@ -203,6 +208,39 @@ const MovieList = () => {
     fetchMovies(debouncedSearchTerm, 1, false);
   };
 
+  // ========== 模态框处理函数 ==========
+  const openMovieModal = useCallback((movieId) => {
+    setSelectedMovieId(movieId);
+    setIsModalOpen(true);
+  }, []);
+
+  const closeMovieModal = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedMovieId(null);
+  }, []);
+
+  // ========== ESC键关闭模态框 ==========
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && isModalOpen) {
+        closeMovieModal();
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      // 防止背景滚动
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModalOpen, closeMovieModal]);
+
   // ========== 无限滚动 Hook ==========
   const lastElementRef = useInfiniteScroll(loadMoreMovies, hasMore, isLoadingMore);
 
@@ -302,7 +340,7 @@ const MovieList = () => {
                       key={`${movie.id}-${index}`}
                       ref={isLastMovie ? lastElementRef : null}
                     >
-                    <MovieCard movie={movie} />
+                    <MovieCard movie={movie} onCardClick={openMovieModal} />
                     </div>
                   );
                 })}
@@ -325,6 +363,15 @@ const MovieList = () => {
           )}
         </section>
       </div>
+
+      {/* 电影详情模态框 */}
+      {isModalOpen && selectedMovieId && (
+        <div className="movie-modal-overlay" onClick={closeMovieModal}>
+          <div className="movie-modal-content" onClick={(e) => e.stopPropagation()}>
+            <MovieDetail movieId={selectedMovieId} isModal={true} onClose={closeMovieModal} />
+          </div>
+        </div>
+      )}
     </main>
   )
 }
