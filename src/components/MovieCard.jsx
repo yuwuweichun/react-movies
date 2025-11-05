@@ -8,8 +8,6 @@ const MovieCard = ({ movie:
   return (
     <Link
       to={`/movie/${id}`}
-      target="_blank"
-      rel="noopener noreferrer"
       className="movie-card-link"
     >
       <div className="movie-card">
