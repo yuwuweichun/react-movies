@@ -30,7 +30,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
 
-const MovieDetail = ({ movieId, isModal = false }) => {
+const MovieDetail = ({ movieId, isModal = false, onClose }) => {
   // 获取路由参数中的电影ID，如果没有传入 movieId 则使用路由参数
   const { id: routeId } = useParams();
   const id = movieId || routeId;
@@ -261,6 +261,22 @@ const playCurrentVideo = useCallback((swiper) => {
       {!isModal && <div className="pattern"/>}
 
       <div className={isModal ? 'movie-detail-modal-content' : 'wrapper'}>
+        {/* 模态框内（移动端）返回按钮：仅 isModal 显示；PC 端由 CSS 隐藏 */}
+        {isModal && (
+          <button
+            type="button"
+            onClick={() => (typeof onClose === 'function' ? onClose() : navigate(-1))}
+            className="back-button"
+            aria-label={getTranslation('backToMovies', language)}
+            title={getTranslation('backToMovies', language)}
+          >
+            {/* 左箭头SVG */}
+            <svg width="20" height="20" viewBox="6 6 12 12" fill="none">
+              <path d="M15 18l-6-6 6-6" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        )}
+
         {/* 返回按钮 - 只在非模态框模式下显示 */}
         {!isModal && (
           <div className="back-button-container">
@@ -526,7 +542,8 @@ const playCurrentVideo = useCallback((swiper) => {
 
 MovieDetail.propTypes = {
   movieId: PropTypes.number,
-  isModal: PropTypes.bool
+  isModal: PropTypes.bool,
+  onClose: PropTypes.func
 };
 
 export default MovieDetail;
