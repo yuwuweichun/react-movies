@@ -1,7 +1,7 @@
 // 导入 React 的核心 hooks
 import { useEffect, useState, useCallback, useRef } from 'react'
 // 导入 React Router 相关组件
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 // 导入自定义组件
 import Spinner from './Spinner.jsx'
@@ -34,6 +34,7 @@ const MovieDetail = () => {
   const { id } = useParams();
   // 获取语言上下文
   const { language, apiLanguage } = useLanguage();
+  const navigate = useNavigate(); // 新增
 
   // ========== 状态管理 ==========
   const [movie, setMovie] = useState(null);           // 电影详情数据
@@ -210,7 +211,15 @@ const playCurrentVideo = useCallback((swiper) => {
           <div className="error-container">
             <h2 className="text-red-500">{getTranslation('error', language)}</h2>
             <p className="text-gray-100">{getTranslation('errorLoadingDetails', language)}</p>
-            <button onClick={() => window.close()} className="back-button">
+            <button
+              onClick={() => navigate(-1)}
+              className="back-button"
+              style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              {/* 左箭头SVG */}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               {getTranslation('backToMovies', language)}
             </button>
           </div>
@@ -227,7 +236,14 @@ const playCurrentVideo = useCallback((swiper) => {
         <div className="wrapper">
           <div className="error-container">
             <h2>{getTranslation('movieNotFound', language)}</h2>
-            <button onClick={() => window.close()} className="back-button">
+            <button
+              onClick={() => navigate(-1)}
+              className="back-button"
+              style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               {getTranslation('backToMovies', language)}
             </button>
           </div>
@@ -245,11 +261,15 @@ const playCurrentVideo = useCallback((swiper) => {
         {/* 返回按钮 */}
         <div className="back-button-container">
           <button
-            onClick={() => window.close()}
+            onClick={() => navigate(-1)}
             className="back-button"
-            title="关闭此标签页"
+            title={getTranslation('backToMovies', language)}
+            style={{ display: 'flex', alignItems: 'center', gap: 4 }}
           >
-            ✕ {getTranslation('backToMovies', language)}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18l-6-6 6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {getTranslation('backToMovies', language)}
           </button>
         </div>
 
