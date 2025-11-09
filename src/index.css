@@ -975,8 +975,8 @@
 /* 模态框内容容器 */
 .movie-modal-content {
   position: relative;
-  width: 60vw;
-  height: 90vh;
+  width: 70vw;
+  height: 100vh;
   border-radius: 16px;
   background: var(--color-primary, #030014);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
